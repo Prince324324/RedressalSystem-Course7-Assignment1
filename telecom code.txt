@@ -1,0 +1,2267 @@
+PRINCE VARGHESE
+
+SIMPLILEARN
+
+PROJECT
+
+=====================================================================================
+=====================================================================
+
+
+admin-home.component.html:-- - -- -- -- - -- -- -- -- - -- -- -- - -- -- -- --
+
+<div class="container">
+<div class="card p-5 text-center">
+<h1>Welcome Admin!!</h1>
+</div>
+</div>
+
+admin-home.component.spec.ts:--- -- -- - -- -- -- - -- -- -- -- - -- -- -- - ---
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { AdminHomeComponent } from './admin-home.component';
+
+describe('AdminHomeComponent', () => {
+let component: AdminHomeComponent;
+let fixture: ComponentFixture<AdminHomeComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ AdminHomeComponent ]
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(AdminHomeComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+admin-home.component.ts:--- -- -- - -- -- -- -- - -- -- --
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+selector: 'app-admin-home',
+templateUrl: './admin-home.component.html',
+styleUrls: ['./admin-home.component.css']
+})
+export class AdminHomeComponent implements OnInit {
+
+constructor() { }
+
+ngOnInit(): void {
+}
+
+}
+
+allcomplaints.component.html:-- -- -- - -- -- -- -- - -- -- -- - -- -- --
+
+<div class="row">
+<div class="col-md-12">
+
+<div class="card-header"><h1>Complaint Details:</h1></div>
+
+<div class="card-body" style="background-color: aliceblue;">
+<table class="table table-info">
+<tr style="text-align: center;">
+<th style="padding: 5px;">ID</th>
+<th style="padding: 5px;">Full Name</th>
+<th style="padding: 5px;">Heading</th>
+<th style="padding: 5px;">Details</th>
+<!-- <th style="padding: 5px;">Director</th>
+<th style="padding: 5px;">Language</th> -->
+<th style="padding: 10px;">Address</th>
+<th style="padding: 5px;">Pincode</th>
+
+<th style="padding: 5px;">complaintStatus</th>
+</tr>
+
+<tr style="text-align: center;" *ngFor="let c of complaintdetails">
+<td style="padding: 5px;">{{c.complaintId}}</td>
+<td style="padding: 5px;">{{c.fullname}}</td>
+<td style="padding: 5px;">{{c.heading}}</td>
+<td style="padding: 5px;">{{c.details}}</td>
+<td style="padding: 5px;">{{c.address}}</td>
+<!-- <td style="padding: 5px;">{{mt.director}}</td>
+<td style="padding: 5px;">{{mt.language}}</td> -->
+<td style="padding: 5px;">{{c.pincode}}</td>
+<td style="padding: 5px;">{{c.complaintStatus}}</td>
+</tr>
+</table>
+
+</div>
+</div>
+</div>
+
+allcomplaints.component.spec.ts: -- - -- -- -- - -- -- -- -- - -- -- -- - -- -- --
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { AllcomplaintsComponent } from './allcomplaints.component';
+
+describe('AllcomplaintsComponent', () => {
+let component: AllcomplaintsComponent;
+let fixture: ComponentFixture<AllcomplaintsComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ AllcomplaintsComponent ]
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(AllcomplaintsComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+allcomplaints.component.ts: -- - -- -- -- -- - -- -- -- -- - -- -- -- - -- -- -- ---
+
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { Complaint } from '../complaint';
+import { ComplaintService } from '../complaint.service';
+
+@Component({
+
+selector: 'app-allcomplaints',
+templateUrl: './allcomplaints.component.html',
+styleUrls: ['./allcomplaints.component.css']
+})
+export class AllcomplaintsComponent implements OnInit {
+
+pageNumber:number = 0;
+complaintdetails = [];
+constructor(
+private complaintService:ComplaintService,
+private router:Router
+){}
+
+ngOnInit(): void {
+this.getAllComplaints();
+}
+
+getAllComplaints()
+{
+this.complaintService.getComplaintList()
+.subscribe(
+(resp: Complaint[]) => {
+console.log(resp);
+resp.forEach(c => this.complaintdetails.push(c));
+},
+(error: HttpErrorResponse) => {
+console.log(error);
+}
+);
+
+}
+
+}
+
+allcomplaints-manager.component.html:-- -- - -- -- -- - -- -- -- -- - -- -- -- - -- ---
+
+<div class="row">
+<div class="col-md-12">
+
+<div class="card-header"><h1>Complaint Details:</h1></div>
+
+<div class="card-body" style="background-color: aliceblue;">
+<table class="table table-info">
+<tr style="text-align: center;">
+<th style="padding: 5px;">ID</th>
+<th style="padding: 5px;">Full Name</th>
+<th style="padding: 5px;">Heading</th>
+<th style="padding: 5px;">Details</th>
+<!-- <th style="padding: 5px;">Director</th>
+<th style="padding: 5px;">Language</th> -->
+<th style="padding: 10px;">Address</th>
+<th style="padding: 5px;">Pincode</th>
+<th style="padding: 5px;">Assigned To</th>
+<th style="padding: 5px;">complaintStatus</th>
+
+</tr>
+
+<tr style="text-align: center;" *ngFor="let c of complaintdetails">
+<td style="padding: 5px;">{{c.complaintId}}</td>
+<td style="padding: 5px;">{{c.fullname}}</td>
+<td style="padding: 5px;">{{c.heading}}</td>
+<td style="padding: 5px;">{{c.details}}</td>
+<td style="padding: 5px;">{{c.address}}</td>
+<!-- <td style="padding: 5px;">{{mt.director}}</td>
+<td style="padding: 5px;">{{mt.language}}</td> -->
+<td style="padding: 5px;">{{c.pincode}}</td>
+<td style="padding: 5px;" *ngIf="c.pincode === '110025'">Ankita Soni</td>
+<td style="padding: 5px;" *ngIf="c.pincode === '110021'">Deepak Shrivastav</td>
+<td style="padding: 5px;" *ngIf="c.pincode === '110022'">Asima Tirkey</td>
+<td style="padding: 5px;">{{c.complaintStatus}}</td>
+</tr>
+</table>
+
+</div>
+</div>
+</div>
+
+allcomplaints-manager.component.spec.ts:--- -- -- -- - -- -- -- - -- -- -- -- - -- -- -- -- - -- --
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { AllcomplaintsManagerComponent } from './allcomplaints-manager.component';
+
+describe('AllcomplaintsManagerComponent', () => {
+let component: AllcomplaintsManagerComponent;
+let fixture: ComponentFixture<AllcomplaintsManagerComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ AllcomplaintsManagerComponent ]
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(AllcomplaintsManagerComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+allcomplaints-manager.components.ts:-- -- - -- -- -- -- - -- -- -- - -- ---
+
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Complaint } from '../complaint';
+import { ComplaintService } from '../complaint.service';
+
+@Component({
+selector: 'app-allcomplaints-manager',
+templateUrl: './allcomplaints-manager.component.html',
+styleUrls: ['./allcomplaints-manager.component.css']
+})
+export class AllcomplaintsManagerComponent implements OnInit {
+
+asignedTo:string;
+complaintdetails:any|Complaint[];
+constructor(
+private complaintService:ComplaintService,
+private router:Router
+){}
+
+ngOnInit(): void {
+this.getAllComplaints();
+
+}
+
+getAllComplaints()
+{
+this.complaintService.getComplaintList()
+.subscribe(
+(resp: Complaint[]) => {
+console.log(resp);
+resp.forEach(c => this.complaintdetails.push(c));
+},
+(error: HttpErrorResponse) => {
+
+console.log(error);
+}
+);
+}
+
+wip(complaintId){
+this.complaintService.markAsWip(complaintId);
+this.getAllComplaints();
+}
+Reviewed(complaintId){
+this.complaintService.markAsInReview(complaintId);
+this.getAllComplaints();
+}
+Resolved(complaintId){
+this.complaintService.markAsResolved(complaintId);
+this.getAllComplaints();
+}
+}
+
+complaint-engineer.component.html: -- -- -- - -- -- -- -- - -- -- -- - -- -- -- -- - -----
+
+<div class="row">
+<div class="col-md-12">
+
+<div class="card-header">
+<h1>Complaint Details:</h1>
+</div>
+
+<div class="card-body" style="background-color: aliceblue;">
+<table class="table table-info">
+<tr style="text-align: center;">
+<th style="padding: 5px;">ID</th>
+<th style="padding: 5px;">Full Name</th>
+<th style="padding: 5px;">Heading</th>
+<th style="padding: 5px;">Details</th>
+<!-- <th style="padding: 5px;">Director</th>
+<th style="padding: 5px;">Language</th> -->
+<th style="padding: 10px;">Address</th>
+<th style="padding: 5px;">Pincode</th>
+<th style="padding: 5px;">complaintStatus</th>
+<th style="padding: 5px;">Operation</th>
+</tr>
+
+<tr style="text-align: center;" *ngFor="let c of complaintdetails">
+<ng-container *ngIf="c.pincode === '110025'">
+<td style="padding: 5px;">{{c.complaintId}}</td>
+<td style="padding: 5px;">{{c.fullname}}</td>
+<td style="padding: 5px;">{{c.heading}}</td>
+<td style="padding: 5px;">{{c.details}}</td>
+<td style="padding: 5px;">{{c.address}}</td>
+<!-- <td style="padding: 5px;">{{mt.director}}</td>
+<td style="padding: 5px;">{{mt.language}}</td> -->
+<td style="padding: 5px;">{{c.pincode}}</td>
+<td style="padding: 5px;">{{c.complaintStatus}}</td>
+<td style="padding: 5px;">
+<button mat-raised-button color="primary" class="mb-2"
+
+(click)="wip(c.complaintId)">WIP</button>
+<button mat-raised-button color="primary" class="mb-2"
+(click)="Reviewed(c.complaintId)">Reviewed</button>
+<button mat-raised-button color="primary" class="ml-2"
+(click)="Resolved(c.complaintId)">Resolved</button>
+</td>
+
+</ng-container>
+</tr>
+
+</table>
+
+</div>
+</div>
+</div>
+
+complaint-engineer.component.spec.ts:-- -- - -- -- -- - -- -- -- -- - -- -- -- - -- -- -- ---
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ComplaintEngineerComponent } from './complaint-engineer.component';
+
+describe('ComplaintEngineerComponent', () => {
+let component: ComplaintEngineerComponent;
+let fixture: ComponentFixture<ComplaintEngineerComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+
+declarations: [ ComplaintEngineerComponent ]
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(ComplaintEngineerComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+complaint-engineer.component.ts:-- -- - -- -- -- -- - -- -- -- - -- -- --
+
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Complaint } from '../complaint';
+import { ComplaintService } from '../complaint.service';
+
+@Component({
+selector: 'app-complaint-engineer',
+templateUrl: './complaint-engineer.component.html',
+styleUrls: ['./complaint-engineer.component.css']
+})
+export class ComplaintEngineerComponent implements OnInit {
+
+complaintdetails = [];
+constructor(
+private complaintService:ComplaintService
+){}
+
+ngOnInit(): void {
+this.getAllComplaints();
+}
+
+getAllComplaints()
+{
+this.complaintService.getComplaintList()
+.subscribe(
+(resp: Complaint[]) => {
+console.log(resp);
+resp.forEach(c => this.complaintdetails.push(c));
+},
+(error: HttpErrorResponse) => {
+console.log(error);
+}
+);
+}
+
+wip(complaintId){
+this.complaintService.markAsWip(complaintId);
+this.getAllComplaints();
+}
+Reviewed(complaintId){
+
+this.complaintService.markAsInReview(complaintId);
+this.getAllComplaints();
+}
+Resolved(complaintId){
+this.complaintService.markAsResolved(complaintId);
+this.getAllComplaints();
+}
+
+}
+
+complaint-register.component.html:--- - -- -- -- - -- -- -- -- - -- -- -- --
+
+<div class="container mt-5">
+<div class="card p-5" style="background-color:#012169;">
+<div class="row">
+<div class="col-12">
+<form #comaplaintForm="ngForm" (ngSubmit)="registerComplaint(comaplaintForm)" >
+
+<mat-form-field appearance="outline" class="w-100">
+<mat-label>Full Name: </mat-label>
+<input matInput placeholder="fullname" [(ngModel)]="complaintDetails.fullname"
+name="fullname" style="color: whitesmoke;">
+</mat-form-field>
+
+<!--Enter complaint category-->
+<!-- <mat-form-field appearance="fill">
+<mat-label>Category</mat-label>
+<mat-select [formControl]="Category" multiple>
+<mat-select-trigger>
+
+{{category.value?.[0] || ''}}
+<span *ngIf="(category.value?.length || 0) > 1" class="example-additional-selection">
+(+{{(category.value?.length || 0) - 1}} {{category.value?.length === 2 ? 'other' : 'others'}})
+</span>
+</mat-select-trigger>
+<mat-option *ngFor="let topping of toppingList" [value]="topping">{{category}}</mat-option>
+</mat-select>
+</mat-form-field>
+-->
+
+<mat-form-field appearance="outline" class="w-100">
+<mat-label>Complaint Title: </mat-label>
+<input matInput placeholder="Complaint Title" [(ngModel)]="complaintDetails.heading"
+name="heading" style="color: whitesmoke;">
+</mat-form-field>
+
+<mat-form-field appearance="outline" class="w-100">
+<mat-label>Complaint Details: </mat-label>
+<textarea type="text" matInput placeholder="Complaint Details"
+[(ngModel)]="complaintDetails.details" name="details" style="color: whitesmoke;"></textarea>
+</mat-form-field>
+
+<mat-form-field appearance="outline" class="w-100">
+<mat-label>Address: </mat-label>
+<input matInput placeholder="Address" [(ngModel)]="complaintDetails.address"
+name="address" style="color: whitesmoke;" required>
+</mat-form-field>
+
+<mat-form-field appearance="outline" class="w-100">
+
+<mat-label>Pincode: </mat-label>
+<input matInput placeholder="Pincode" [(ngModel)]="complaintDetails.pincode"
+name="pincode" style="color: whitesmoke;" required>
+</mat-form-field>
+
+<div align="centre">
+<button type="submit" mat-raised-button color="accent">Register Complaint</button>
+</div>
+</form>
+</div>
+</div>
+
+</div>
+</div>
+
+complaint-register.component.spec.ts: -- -- -- - -- -- -- - -- -- -- -- - -- -- -- - --
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ComplaintRegisterComponent } from './complaint-register.component';
+
+describe('ComplaintRegisterComponent', () => {
+let component: ComplaintRegisterComponent;
+let fixture: ComponentFixture<ComplaintRegisterComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ ComplaintRegisterComponent ]
+})
+
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(ComplaintRegisterComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+complaint-register.component.ts: -- -- -- - -- -- -- -- - -- -- -- - -- -- -- -- - -- --
+
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Category } from '../category.model';
+import { Complaint } from '../complaint';
+import { ComplaintService } from '../complaint.service';
+import { Role } from '../role';
+import { User } from '../user';
+
+@Component({
+selector: 'app-complaint-register',
+templateUrl: './complaint-register.component.html',
+
+styleUrls: ['./complaint-register.component.css']
+})
+
+export class ComplaintRegisterComponent implements OnInit {
+
+userDetails: any| User[];
+customer:User;
+role:Role
+category: Category[];
+
+complaintDetails: Complaint = {
+category: '',
+heading: '',
+details: '',
+address: '',
+pincode: '',
+fullname: '',
+complaintStatus: '',
+customer: new User
+}
+
+constructor(
+private complaintService:ComplaintService,
+private router:Router,
+private activatedRoute:ActivatedRoute
+){}
+
+ngOnInit(): void {
+// this.userDetails = this.activatedRoute.snapshot.data['complaintDetails'];
+
+// this.userDetails.forEach(
+// x =>this.complaintDetails.customer.push(
+//
+
+{complaintId : x.complaintId}//quantity default value given 1
+
+//
+
+)
+
+// );
+
+console.log(this.userDetails);
+console.log(this.complaintDetails);
+}
+
+public registerComplaint(comaplaintForm:NgForm){
+console.log(comaplaintForm.value);
+this.complaintService.regNewComplaint(comaplaintForm.value).subscribe(
+(resp) => {
+console.log(resp);
+this.router.navigate(['/customerHome']);
+},
+(error) =>{
+console.log(error);
+}
+)
+}
+
+}
+
+customer-home.component.html:--- -- - -- -- -- -- - -- -- -- - --
+
+<div class="container">
+
+<div class="card p-5 text-center">
+<h1>Welcome!!</h1>
+<h2>Any complaints?</h2>
+<a routerLink="/complaintReg" style="color: red;"><h2>Raise your complaints here...</h2></a>
+</div>
+</div>
+
+customer-home.component.spec.ts:-------------------------------------------
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { CustomerHomeComponent } from './customer-home.component';
+
+describe('CustomerHomeComponent', () => {
+let component: CustomerHomeComponent;
+let fixture: ComponentFixture<CustomerHomeComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ CustomerHomeComponent ]
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(CustomerHomeComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+customer-home.component.ts:- - -- -- -- -- - -- -- -- - -- -- -- -- - -- -
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+selector: 'app-customer-home',
+templateUrl: './customer-home.component.html',
+styleUrls: ['./customer-home.component.css']
+})
+export class CustomerHomeComponent implements OnInit {
+
+constructor() { }
+
+ngOnInit(): void {
+}
+
+}
+
+customer-reg.component.html: -- -- -- - -- -- -- - -- -- -- ---
+
+<div class="container">
+<div class="card p-20 mt-5 mb-5" style="background-color: #002E4B;">
+<form #userRegister = "ngForm" (ngSubmit)="register(userRegister)" >
+
+<div class="p-5">
+
+<mat-form-field appearance="outline" class="w-100 p-2" >
+<mat-label >
+User Full Name:
+</mat-label>
+<input matInput ngModel name="fullName" id="fullName" placeholder="User Full Name"
+style="color: whitesmoke;">
+<!-- <mat-hint>Full Name</mat-hint> -->
+</mat-form-field>
+
+<mat-form-field appearance="outline" class="w-100 p-2">
+<mat-label>
+Username
+</mat-label>
+<input matInput ngModel name="userName" id="userName" placeholder="userName"
+required style="color: whitesmoke;">
+<!-- <mat-hint>Username</mat-hint> -->
+</mat-form-field>
+
+<mat-form-field appearance="outline" class="w-100 p-2">
+<mat-label>
+Password
+</mat-label>
+<input type="password" matInput ngModel name="userpassword" id="userpassword"
+placeholder="userpassword" required style="color: whitesmoke;">
+<!-- <mat-hint>Password</mat-hint> -->
+</mat-form-field>
+
+</div>
+
+<div class="text-center">
+<button type="submit" mat-raised-button color="primary" class="mt-2 mb-5 w-50" >
+Register
+</button>
+</div>
+
+</form>
+</div>
+</div>
+
+customer-reg.component.spec.ts:-- - -- -- -- -- - -- -- -- - -- -- --
+
+<div class="container">
+<div class="card p-20 mt-5 mb-5" style="background-color: #002E4B;">
+<form #userRegister = "ngForm" (ngSubmit)="register(userRegister)" >
+
+<div class="p-5">
+
+<mat-form-field appearance="outline" class="w-100 p-2" >
+<mat-label >
+User Full Name:
+</mat-label>
+<input matInput ngModel name="fullName" id="fullName" placeholder="User Full Name"
+style="color: whitesmoke;">
+<!-- <mat-hint>Full Name</mat-hint> -->
+</mat-form-field>
+
+<mat-form-field appearance="outline" class="w-100 p-2">
+<mat-label>
+Username
+</mat-label>
+<input matInput ngModel name="userName" id="userName" placeholder="userName"
+required style="color: whitesmoke;">
+<!-- <mat-hint>Username</mat-hint> -->
+</mat-form-field>
+
+<mat-form-field appearance="outline" class="w-100 p-2">
+<mat-label>
+Password
+</mat-label>
+<input type="password" matInput ngModel name="userpassword" id="userpassword"
+placeholder="userpassword" required style="color: whitesmoke;">
+<!-- <mat-hint>Password</mat-hint> -->
+</mat-form-field>
+
+</div>
+
+<div class="text-center">
+<button type="submit" mat-raised-button color="primary" class="mt-2 mb-5 w-50" >
+Register
+</button>
+</div>
+
+</form>
+</div>
+</div>
+
+customer-reg.component.ts:-- -- - -- -- -- - -- -- -- -- - -- -- --
+
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { UserService } from '../user.service';
+
+@Component({
+selector: 'app-customer-reg',
+templateUrl: './customer-reg.component.html',
+styleUrls: ['./customer-reg.component.css']
+})
+export class CustomerRegComponent implements OnInit {
+
+constructor(
+private userservice:UserService,
+private router:Router
+){}
+
+ngOnInit(): void {
+}
+
+register(userRegister:NgForm){
+console.log(userRegister.value);
+this.userservice.customerRegister(userRegister.value).subscribe(
+(response) => {
+console.log(response);
+this.router.navigate(['/login']);
+
+},
+(error) => {
+console.log(error);
+}
+);
+}
+
+}
+
+engineer-home.component.html:---- -- -- -- -- - -- -- -- - -- -- -- -- - -- --
+
+<div class="container">
+<div class="card p-5 text-center">
+<h1>Welcome Ankita!!</h1>
+<h2>Check Complaints Assigned to you...</h2>
+
+</div>
+</div>
+
+engineer-home.component.spec.ts:-- -- -- - -- -- -- -- - -- -- -- - -- -- -
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { EngineerHomeComponent } from './engineer-home.component';
+
+describe('EngineerHomeComponent', () => {
+let component: EngineerHomeComponent;
+let fixture: ComponentFixture<EngineerHomeComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ EngineerHomeComponent ]
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(EngineerHomeComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+engineer-home.component.ts:-- -- -- -- - -- -- -- - -- -- -- -- -
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+selector: 'app-engineer-home',
+templateUrl: './engineer-home.component.html',
+styleUrls: ['./engineer-home.component.css']
+})
+export class EngineerHomeComponent implements OnInit {
+
+constructor() { }
+
+ngOnInit(): void {
+}
+
+}
+
+header.component.css: - -- -- -- -- - -- -- -- - -- --
+
+/* .icon{
+height: 1x;
+width: 100px;
+} */
+
+.example-spacer {
+flex: 1 1 auto;
+}
+
+header.component.html: -- - -- -- -- - -- -- -- -- - -- -- ---
+
+<mat-toolbar color="primary">
+<mat-toolbar-row >
+<span ><img src="/assets/telecom-icon2.jpg" style="width: 80px; height: 60px; cursor: pointer;"
+class="img-fluid rounded-lg" routerLink=""></span>
+<span class="ml-3"routerLink="" style="cursor: pointer;color: black;" >ABC Telecom</span>
+<span class="example-spacer"></span>
+<button mat-raised-button color="accent" *ngIf="! isLoggedIn()"
+routerLink="/login">Login</button>
+<button mat-raised-button color="warn" class="ml-2" *ngIf="isLoggedIn()"
+(click)="logout()">Logout</button>
+
+</mat-toolbar-row>
+
+<mat-toolbar-row color="primary" >
+<button mat-raised-button color="accent" *ngIf="isCustomer()"
+routerLink="/customerHome">Dashboard</button>
+<button mat-raised-button color="accent" *ngIf="isCustomer()" routerLink="/complaintReg"
+class="ml-2">Register Complaint</button>
+<button mat-raised-button color="accent" *ngIf="isCustomer()" routerLink="/mycomplaints"
+class="ml-2">Previous complaints</button>
+<button mat-raised-button color="accent" *ngIf="isAdmin()"
+routerLink="/adminHome">Dashboard</button>
+<button mat-raised-button color="accent" *ngIf="isAdmin()" routerLink="/allcomplaints" class="ml2" >All complaints</button>
+<button mat-raised-button color="accent" *ngIf="isAdmin()" routerLink="/userList" class="ml2">All Users</button>
+<button mat-raised-button color="accent" *ngIf="isManager()"
+routerLink="/managerHome">Dashboard</button>
+<button mat-raised-button color="accent" *ngIf="isManager()"
+routerLink="/allComplaintsManager" class="ml-2" >All complaints</button>
+<button mat-raised-button color="accent" *ngIf="isEngineer()" routerLink="/complaintEngg"
+class="ml-2">Assigned Complaints</button>
+</mat-toolbar-row>
+</mat-toolbar>
+
+header.component.spec.ts:- -- -- -- - -- -- -- - -- -- -- -- - -- -- --
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { HeaderComponent } from './header.component';
+
+describe('HeaderComponent', () => {
+
+let component: HeaderComponent;
+let fixture: ComponentFixture<HeaderComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ HeaderComponent ]
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(HeaderComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+header.component.ts:- -- -- -- - -- -- -- -- - -- -- -- - --
+
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { UserAuthService } from '../user-auth.service';
+import { UserService } from '../user.service';
+
+@Component({
+
+selector: 'app-header',
+templateUrl: './header.component.html',
+styleUrls: ['./header.component.css']
+})
+export class HeaderComponent implements OnInit {
+
+constructor(
+private userAuthService:UserAuthService,
+private router:Router,
+public userService:UserService
+){}
+
+ngOnInit(): void {
+}
+
+public isLoggedIn(){
+return this.userAuthService.isLoggedIn();
+}
+
+public logout(){
+this.userAuthService.clear();
+this.router.navigate(['']);
+}
+
+public isAdmin(){
+return this.userAuthService.isAdmin();
+}
+
+public isCustomer(){
+
+return this.userAuthService.isCustomer();
+}
+
+public isManager(){
+return this.userAuthService.isManager();
+}
+
+public isEngineer(){
+return this.userAuthService.isEngineer();
+}
+
+}
+
+home.component.css:- -- -- -- - -- -- -- -- - -- -- -- - --
+
+.row {
+display: flex;
+}
+
+.column {
+flex: 33.33%;
+padding: 5px;
+}
+
+img:hover{
+width: 500px;
+height: 350px;
+border: 2px solid #FAFF00;
+border-radius: 10px;
+
+cursor: pointer;
+}
+
+home.component.html:-- - -- -- -- - -- -- -- -- - -- -- -- - --
+
+<div class="container">
+<p class="mt-3">
+ABC Telecom is India's foremost and truly-integrated telecommunications service provider, with a
+corporate customer base of over 40,000 Indian and multinational corporations, including small and
+medium enterprises, and close to 300 of the finest enterprise and carrier companies globally.
+</p>
+
+<p class="mt-2">
+ABC Telecom touches 90 per cent of the country's population, supported by an OFC network of over
+190,000 km. The Company also has a significant tower infrastructure that caters to other
+telecommunications operators.
+</p>
+
+<p class="mt-2" >
+Spread across India's top 29 cities, ABC Telecom' data solutions for Homes and Small Enterprises cater
+to buildings connected to the Reliance network. Reliance Communications also owns the world’s largest
+private under-sea cable system under its subsidiary Global Cloud Xchange, which offers a
+comprehensive portfolio of solutions customized for Carriers, Enterprises and New Media Companies
+globally.
+</p>
+
+<p class="mt-2">
+GCX's under-sea cable system spans more than 67,000 route km, which, seamlessly integrated with
+Reliance Communications' 200,000 route km of domestic optic fiber backbone, provides a robust Global
+Service Delivery Platform for Enterprises. GCX is uniquely equipped to support businesses through the
+deployment of Next-Generation Enterprise solutions across its Cloud Delivery Networks. Since its
+
+inception in December 2002, Reliance Communications has been revolutionizing the way the world
+communicates, impacting not just lifestyles, but the very lives of its customers-globally
+</p>
+
+For further information, please visit: <a href="#">www.abctele.co.in</a>
+
+<div class="row mt-2">
+<div class="column">
+<a><img src="/assets/telecom-1.jpg" alt="Snow" style="width:100%;height: 200px;"></a>
+<p class="text-center"><b>Career</b></p>
+</div>
+<div class="column">
+<a><img src="/assets/telecom-2.jpg" alt="Forest" style="width:100%;height: 200px;"></a>
+<p class="text-center"><b>Our Offices</b></p>
+</div>
+<div class="column">
+<a><img src="/assets/telecom-3.jpg" alt="Mountains" style="width:100%;height: 200px;"></a>
+<p class="text-center"><b>Our Vision</b></p>
+</div>
+</div>
+
+</div>
+
+home.component.spec.ts:--- -- -- - -- -- -- - -- -- -- -- - -- -
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { HomeComponent } from './home.component';
+
+describe('HomeComponent', () => {
+let component: HomeComponent;
+let fixture: ComponentFixture<HomeComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ HomeComponent ]
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(HomeComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+home.component.ts:--- -- -- - -- -- -- -- - -- -- -- - -- ---
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+selector: 'app-home',
+templateUrl: './home.component.html',
+
+styleUrls: ['./home.component.css']
+})
+export class HomeComponent implements OnInit {
+
+constructor() { }
+
+ngOnInit(): void {
+}
+
+}
+
+login.component.html:- -- -- -- - -- -- -- - -- -- -- -- - ---
+
+<div class="container mt-5">
+<div clas="card" style="padding: 50px;padding-right: 300px; padding-left: 300px;backgroundcolor:#F0FFFF">
+
+<form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+<div class="mb-2 text-center" style="text-align: center;color:red;font-style: italic;font-size:
+larger;">
+{{msg}}
+</div>
+<input type="text" ngModel name="userName" id="userName" placeholder="Enter username"
+style="padding: 15px;" class="form-control mb-4 ml-5 ml-5">
+<input type="password" ngModel name="userPassword" id="userPassword" placeholder="Enter
+username" style="padding: 15px;"
+class="form-control mb-4 ml-5 mr-5">
+<div class=" ml-5 mr-5" style="padding: 15px;background-color: #F0FFFF">
+<input type="submit" value="Login" class="btn btn-outline-primary form-control rounded-2
+ml-10 mr-10 mb-2 " />
+
+<input type="reset" value="Reset" class="btn btn-outline-warning form-control rounded-2
+ml-10 mr-10" />
+</div>
+</form>
+</div>
+<!-- outside card -->
+<div class="text-center">
+<button mat-raised-button type="button" color="primary" class="mt-2 mb-5"
+(click)="registerUser()" >Create customer account</button>
+</div>
+
+</div>
+
+<!-- input type="text" name id will be to keep same as mentioned in backend class jwtRequest/(The class
+which responsible to take username and password for further backend processing) to make the
+integration automatic -->
+
+login.component.spec.ts:--- -- - -- -- -- - -- -- -- -- - -- -- -- - -
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { LoginComponent } from './login.component';
+
+describe('LoginComponent', () => {
+let component: LoginComponent;
+let fixture: ComponentFixture<LoginComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ LoginComponent ]
+
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(LoginComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+login.component.ts:--- -- - -- -- -- -- - -- -- -- - -- -- -- -
+
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { UserAuthService } from '../user-auth.service';
+import { UserService } from '../user.service';
+
+@Component({
+selector: 'app-login',
+templateUrl: './login.component.html',
+styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit {
+
+msg:any;
+constructor(
+private userService:UserService,
+private userAuthSrvice:UserAuthService,
+private router:Router
+){}
+
+ngOnInit(): void {
+}
+login(loginForm:NgForm){
+this.userService.login(loginForm.value).subscribe((response:any)=>{
+console.log(response);//this response contains the entered userdata
+// console.log(response.jwtToken);
+// console.log(response.user.role);
+this.userAuthSrvice.setRoles(response.user.role);
+this.userAuthSrvice.setToken(response.jwtToken);
+
+const role = response.user.role[0].roleName;//the value of role= Admin or User is present inside
+//user-->role-->roleName
+if(role =='Admin'){
+this.router.navigate(['/adminHome']);
+}
+else if(role =='Customer'){
+this.router.navigate(['/customerHome']);
+}
+else if(role =='Manager'){
+this.router.navigate(['/managerHome']);
+}
+
+else if(role =='Engineer'){
+this.router.navigate(['/engineerHome']);
+}
+else{
+this.msg = "Entered Credentials are incorrect";
+}
+},
+(error)=>{
+this.msg = "Entered Credentials are incorrect, Please try again!!";
+console.log(error);
+});
+console.log("Form is submitted");
+// console.log(loginForm.value); //This will print data values input in the form and print the console
+}
+
+registerUser(){
+this.router.navigate(['/customerReg']);
+}
+
+}
+
+manager-home.component.html:- -- -- -- - -- -- -- - -- -- -- -- - -- -- --
+
+<div class="container">
+<div class="card p-5 text-center">
+<h1>Welcome Manager!!</h1>
+<h2>Assign complaints </h2>
+
+</div>
+
+</div>
+
+manager-home.component.spec.ts:--- - -- -- -- -- - -- -- -- - -- -- -- ---
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ManagerHomeComponent } from './manager-home.component';
+
+describe('ManagerHomeComponent', () => {
+let component: ManagerHomeComponent;
+let fixture: ComponentFixture<ManagerHomeComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ ManagerHomeComponent ]
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(ManagerHomeComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+manager-home.component.ts:--- -- - -- -- -- - -- -- -- -- - -- -- --
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+selector: 'app-manager-home',
+templateUrl: './manager-home.component.html',
+styleUrls: ['./manager-home.component.css']
+})
+export class ManagerHomeComponent implements OnInit {
+
+constructor() { }
+
+ngOnInit(): void {
+}
+
+}
+
+mycomplaints.component.html:-- -- - -- -- -- - -- -- -- -- - -- ---
+
+<div class="container mt-5 mb-2">
+<div class="row">
+<div class="col-md-12">
+<div class="card"style="background-color: aliceblue;">
+<div class="card-header"><h1>Complaint Details:</h1></div>
+</div>
+<div class="card-body" style="background-color: aliceblue;">
+<table class="table table-info">
+
+<tr style="text-align: center;">
+<th style="padding: 5px;">Heading</th>
+<th style="padding: 5px;">Details</th>
+<!-- <th style="padding: 5px;">Movie Summary</th> -->
+<th style="padding: 5px;">Address</th>
+<th style="padding: 10px;">Pincode</th>
+<th style="padding: 5px;">Status</th>
+
+</tr>
+
+<tr *ngFor="let c of mycomplaints" style="text-align: center;">
+<ng-container *ngIf="c.pincode === '110025'">
+<td style="padding: 8px;">{{c.heading}}</td>
+<td style="padding: 8px;">{{c.details}}</td>
+<!-- <td style="padding: 8px;">{{c.movieTicket.description}}</td> -->
+<td style="padding: 8px;">{{c.address}}</td>
+<td style="padding: 8px;">{{c.pincode}}</td>
+<td style="padding: 8px;">{{c.complaintStatus}}</td>
+</ng-container>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+mycomplaints.component.spec.ts:--- -- -- -- - -- -- -- - -- -- -- -- -
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { MycomplaintsComponent } from './mycomplaints.component';
+
+describe('MycomplaintsComponent', () => {
+let component: MycomplaintsComponent;
+let fixture: ComponentFixture<MycomplaintsComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ MycomplaintsComponent ]
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(MycomplaintsComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+mycomplaints.component.ts: - -- -- -- - -- -- -- -- - -- -- -- - -- -- -
+
+import { Component, OnInit } from '@angular/core';
+import { Complaint } from '../complaint';
+
+import { ComplaintService } from '../complaint.service';
+
+@Component({
+selector: 'app-mycomplaints',
+templateUrl: './mycomplaints.component.html',
+styleUrls: ['./mycomplaints.component.css']
+})
+export class MycomplaintsComponent implements OnInit {
+
+mycomplaints:Complaint[];
+constructor(
+private complaintService:ComplaintService
+){}
+
+ngOnInit(): void {
+this.getMyComplaints();
+}
+
+getMyComplaints(){
+this.complaintService.getComplaintList().subscribe(
+(resp: Complaint[]) => {
+console.log(resp);
+this.mycomplaints = resp;
+},
+(err) => {
+console.log(err);
+}
+
+)
+
+}
+
+}
+
+user-list.component.html:- -- -- - -- -- -- -- - -- -- -- - -- -- -- -- --
+
+<div class="row">
+<div class="col-md-12">
+
+<div class="card"style="background-color: aliceblue;">
+<div class="card-header"><h1>List of active users:</h1></div>
+</div>
+<div class="card-body" style="background-color: aliceblue;">
+<table class="table table-info">
+<tr style="text-align: center;">
+<th style="padding: 5px;">Full Name</th>
+<th style="padding: 5px;">Username</th>
+<!-- <th style="padding: 5px;">Role</th> -->
+<!-- <th style="padding: 5px;">Role Description</th> -->
+<th style="padding: 5px;">Password</th>
+<th style="padding: 5px;">Delete</th>
+</tr>
+
+<tr style="text-align: center;" *ngFor="let u of userinfo">
+<td style="padding: 5px;">{{u.fullName}}</td>
+<td style="padding: 5px;">{{u.userName}}</td>
+<!-- <td style="padding: 5px;">{{u.roleName}}</td> -->
+<!-- <td style="padding: 5px;">{{u.role.roleDescription}}</td> -->
+
+<td style="padding: 5px;">{{u.userpassword}}</td>
+<td>
+<button mat-icon-button aria-label="Delete icon" (click)="deleteUser(u.userName)"
+color="warn">
+<mat-icon>delete</mat-icon>
+</button>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+
+user-list.component.spec.ts:--- - -- -- -- -- - -- -- -- - -- -- -- -- --
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { UserListComponent } from './user-list.component';
+
+describe('UserListComponent', () => {
+let component: UserListComponent;
+let fixture: ComponentFixture<UserListComponent>;
+
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+declarations: [ UserListComponent ]
+})
+.compileComponents();
+});
+
+beforeEach(() => {
+fixture = TestBed.createComponent(UserListComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+
+it('should create', () => {
+expect(component).toBeTruthy();
+});
+});
+
+user-list.component.ts:--- -- - -- -- -- - -- -- -- -- - -- -- --
+
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Role } from '../role';
+import { User } from '../user';
+import { UserService } from '../user.service';
+
+@Component({
+selector: 'app-user-list',
+templateUrl: './user-list.component.html',
+styleUrls: ['./user-list.component.css']
+})
+export class UserListComponent implements OnInit {
+
+userinfo: any|Role| User[];
+constructor(
+
+private userService:UserService,
+){}
+
+ngOnInit(): void {
+this.getAllUsers();
+}
+getAllUsers(){
+this.userService.getAllUsers().subscribe(
+(resp) =>{
+this.userinfo = resp;
+console.log(resp);
+},
+(err) => {
+console.log(err);
+}
+// data=>{
+// console.log(data);
+// this.userinfo = data;
+// }
+);
+}
+
+public deleteUser(userName){
+console.log(userName);
+this.userService.deleteUser(userName).subscribe((resp)=>{
+console.log(resp);
+this.getAllUsers();
+},
+(error:HttpErrorResponse)=>{
+
+console.log(error);
+})
+}
+
+}
+
+app-routing.module.ts: - -- -- -- -- - -- -- -- - -- -- -- --
+
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { AllcomplaintsManagerComponent } from './allcomplaints-manager/allcomplaintsmanager.component';
+import { AllcomplaintsComponent } from './allcomplaints/allcomplaints.component';
+import { AuthGuard } from './auth.guard';
+import { ComplaintEngineerComponent } from './complaint-engineer/complaint-engineer.component';
+import { ComplaintRegisterComponent } from './complaint-register/complaint-register.component';
+import { ComplaintResolverService } from './complaint-resolver.service';
+import { CustomerHomeComponent } from './customer-home/customer-home.component';
+import { CustomerRegComponent } from './customer-reg/customer-reg.component';
+import { EngineerHomeComponent } from './engineer-home/engineer-home.component';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { ManagerHomeComponent } from './manager-home/manager-home.component';
+import { MycomplaintsComponent } from './mycomplaints/mycomplaints.component';
+import { UserListComponent } from './user-list/user-list.component';
+
+const routes: Routes = [
+{path:'',component:HomeComponent},
+
+{path:'login',component:LoginComponent},
+{path:'customerReg',component:CustomerRegComponent},
+{path:'adminHome',component:AdminHomeComponent,canActivate:[AuthGuard],
+data:{roles:['Admin']}},
+{path:'engineerHome',component:EngineerHomeComponent,canActivate:[AuthGuard],
+data:{roles:['Engineer']}},
+{path:'managerHome',component:ManagerHomeComponent,canActivate:[AuthGuard],
+data:{roles:['Manager']}},
+{path:'customerHome',component:CustomerHomeComponent,canActivate:[AuthGuard],
+data:{roles:['Customer']}},
+{path:'complaintReg',component:ComplaintRegisterComponent,canActivate:[AuthGuard],
+data:{roles:['Customer']}},
+{path:'mycomplaints',component:MycomplaintsComponent,canActivate:[AuthGuard],
+data:{roles:['Customer']} },
+{path:'allcomplaints',component:AllcomplaintsComponent,canActivate:[AuthGuard],
+data:{roles:['Admin']}},
+{path:'userList',component:UserListComponent,canActivate:[AuthGuard],data:{roles:['Admin']}},
+{path:'allComplaintsManager',component:AllcomplaintsManagerComponent,canActivate:[AuthGuard],
+data:{roles:['Manager']}},
+{path:'complaintEngg',component:ComplaintEngineerComponent,canActivate:[AuthGuard],
+data:{roles:['Engineer']}}
+];
+
+@NgModule({
+imports: [RouterModule.forRoot(routes)],
+exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+app.component.html:- -- -- -- -- - -- -- -- - -- -- -- -- - -- -- -
+
+<div class="bg">
+
+<div>
+<app-header></app-header>
+</div>
+<div >
+<router-outlet></router-outlet>
+</div>
+
+<footer class="bg-dark text-center text-white">
+<!-- Copyright -->
+<div class="text-center p-3" style="background-color: rgb(169,169,169)">
+© 2002 Copyright: ABC Telecom || Developed By: anjali kumari||
+<!-- <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a> -->
+</div>
+<!-- Copyright -->
+</footer>
+
+</div>
+
+app.component.spec.ts:--- -- - -- -- -- -- - -- -- -- - -- -- --
+
+import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppComponent } from './app.component';
+
+describe('AppComponent', () => {
+beforeEach(async () => {
+await TestBed.configureTestingModule({
+imports: [
+
+RouterTestingModule
+],
+declarations: [
+AppComponent
+],
+}).compileComponents();
+});
+
+it('should create the app', () => {
+const fixture = TestBed.createComponent(AppComponent);
+const app = fixture.componentInstance;
+expect(app).toBeTruthy();
+});
+
+it(`should have as title 'ComplaintRedressal'`, () => {
+const fixture = TestBed.createComponent(AppComponent);
+const app = fixture.componentInstance;
+expect(app.title).toEqual('ComplaintRedressal');
+});
+
+it('should render title', () => {
+const fixture = TestBed.createComponent(AppComponent);
+fixture.detectChanges();
+const compiled = fixture.nativeElement;
+expect(compiled.querySelector('.content span').textContent).toContain('ComplaintRedressal app is
+running!');
+});
+});
+
+app.component.ts:--- -- -- - -- -- -- - -- -- -- -- - -
+
+import { Component } from '@angular/core';
+
+@Component({
+selector: 'app-root',
+templateUrl: './app.component.html',
+styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+title = 'ComplaintRedressal';
+}
+
+app.module.ts: -- -- - -- -- -- -- - -- -- -- - -- --
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import{MatToolbarModule} from '@angular/material/toolbar';
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatTableModule} from '@angular/material/table';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { AppRoutingModule } from './app-routing.module';
+
+import { AppComponent } from './app.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { HeaderComponent } from './header/header.component';
+import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { EngineerHomeComponent } from './engineer-home/engineer-home.component';
+import { ManagerHomeComponent } from './manager-home/manager-home.component';
+import { CustomerHomeComponent } from './customer-home/customer-home.component';
+import { ComplaintRegisterComponent } from './complaint-register/complaint-register.component';
+import { AuthGuard } from './auth.guard';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
+import { CustomerRegComponent } from './customer-reg/customer-reg.component';
+import { MycomplaintsComponent } from './mycomplaints/mycomplaints.component';
+import { AllcomplaintsComponent } from './allcomplaints/allcomplaints.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { AllcomplaintsManagerComponent } from './allcomplaints-manager/allcomplaintsmanager.component';
+import { ComplaintEngineerComponent } from './complaint-engineer/complaint-engineer.component';
+
+@NgModule({
+declarations: [
+AppComponent,
+HomeComponent,
+LoginComponent,
+HeaderComponent,
+
+AdminHomeComponent,
+EngineerHomeComponent,
+ManagerHomeComponent,
+CustomerHomeComponent,
+ComplaintRegisterComponent,
+CustomerRegComponent,
+MycomplaintsComponent,
+AllcomplaintsComponent,
+UserListComponent,
+AllcomplaintsManagerComponent,
+ComplaintEngineerComponent
+],
+imports: [
+BrowserModule,
+AppRoutingModule,
+NgbModule,
+BrowserAnimationsModule,
+FormsModule,
+MatToolbarModule,
+MatFormFieldModule,
+MatButtonModule,
+MatInputModule,
+MatGridListModule,
+MatTableModule,
+MatIconModule,
+MatDialogModule,
+MatButtonToggleModule,
+RouterModule,
+HttpClientModule
+
+],
+providers: [
+AuthGuard,
+{
+provide: HTTP_INTERCEPTORS,
+useClass: AuthInterceptor,
+multi: true
+}
+],
+bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+auth.guard.ts:--- -- - -- -- -- -- - -- -- -- - -- -- --
+
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from
+'@angular/router';
+import { Observable } from 'rxjs';
+import { UserAuthService } from './user-auth.service';
+import { UserService } from './user.service';
+
+@Injectable({
+providedIn: 'root'
+})
+export class AuthGuard implements CanActivate {
+
+constructor(
+private userAuthService: UserAuthService,
+
+private router: Router,
+private userService: UserService
+){}
+
+canActivate(
+route: ActivatedRouteSnapshot,
+state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean
+| UrlTree {
+if (this.userAuthService.getToken() !== null) {
+const role = route.data['roles'] as Array<string>;
+
+if (role) {
+const match = this.userService.roleMatch(role);
+
+if (match) {
+return true;
+} else {
+this.router.navigate(['/forbidden'])
+return false;
+}
+
+}
+
+}
+
+this.router.navigate(['/login']);
+return false;
+}
+
+}
+
+auth.interceptor.ts:- - -- -- -- - -- -- -- -- - -- -- -- --
+
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from
+"@angular/common/http";
+import { Router } from "@angular/router";
+import { Observable, throwError } from "rxjs";
+import { UserAuthService } from "./user-auth.service";
+import { catchError} from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor{
+
+constructor(private userAuthService:UserAuthService,
+private router:Router){}
+
+//this will create a header with jwt token and send it to the baceknd
+intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+// throw new Error("Method not implemented.")
+if(req.headers.get('No-Auth') === 'True'){
+return next.handle(req.clone());
+}
+
+const token = this.userAuthService.getToken();//getToken is ins user.auth.ts which gets token from
+local storage and passs it to interceptor, if we do not enter anything it will send nothing
+
+//req = this.addToken(req,token); this addToken function will add token value in the header even if
+it is nul hence we need to add a null condition as well.
+
+if(token){
+req = this.addToken(req,token);
+}
+//with thid if conditn it will addToken only when some token value is present.
+
+console.log(req);// will print req in console
+
+//through following code we are going to backend taking the token within
+return next.handle(req).pipe(
+catchError(
+(err:HttpErrorResponse) => {
+console.log(err.status);
+if (err.status == 401) {
+this.router.navigate(['/login'])
+}else if(err.status == 403){
+this.router.navigate(['/forbidden']);
+}
+return throwError("Something went wrong");
+}
+)
+);
+}
+
+private addToken(request:HttpRequest<any>, token:string){
+return request.clone(
+{
+setHeaders:{
+Authorization : `Bearer ${token}`
+
+}
+}
+);
+}
+
+}
+//check whether it contains header like NO_AUTH --> we will not add jwtToken and it will return as it is
+
+category.model.ts:-- -- -- - -- -- -- - -- -- -- -- -
+
+import { Complaint } from "./complaint";
+
+export class Category{
+BroadBand:string;
+PrePaid:string;
+PostPaid:string;
+PlansDetails:string;
+complaint:Complaint;
+}
+
+complaint-resolver.service.ts:- -- -- - -- -- -- -- - -- -- --
+
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Complaint } from './complaint';
+import { ComplaintService } from './complaint.service';
+
+@Injectable({
+providedIn: 'root'
+})
+
+export class ComplaintResolverService implements Resolve<Complaint>{
+
+constructor(
+private complaintService:ComplaintService
+){}
+
+resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Complaint[]| Observable
+<Complaint[]>|Promise<Complaint[]> |any {
+//throw new Error('Method not implemented.');
+const id = route.paramMap.get("id");
+return this.complaintService.getComplaintById(id)
+.pipe(
+map(
+(X : Complaint[], i) => X.map((complaint : Complaint) => (complaint))
+)
+);
+}
+
+}
+
+complaint.service.spec.ts: -- -- - -- -- -- -- - -- -- -- - -- --
+
+import { TestBed } from '@angular/core/testing';
+
+import { ComplaintService } from './complaint.service';
+
+describe('ComplaintService', () => {
+let service: ComplaintService;
+
+beforeEach(() => {
+TestBed.configureTestingModule({});
+service = TestBed.inject(ComplaintService);
+});
+
+it('should be created', () => {
+expect(service).toBeTruthy();
+});
+});
+
+complaint.service.ts: -- -- -- -- - -- -- -- - -- -- -- -- - --
+
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Complaint } from './complaint';
+
+@Injectable({
+providedIn: 'root'
+})
+export class ComplaintService {
+
+PATH_API = "http://localhost:8080";
+
+constructor(
+private httpClient:HttpClient
+){}
+
+public regNewComplaint(registerData){
+return this.httpClient.post(this.PATH_API+'/add/new/complaint',registerData);
+}
+
+public deleteComplaint(complaintId){
+return this.httpClient.delete(this.PATH_API+'/delete/complaint/'+complaintId);
+}
+
+public getComplaintList():Observable<Complaint[]>{
+return this.httpClient.get<Complaint[]>(this.PATH_API+'/get/complaint/list');
+}
+
+public markAsResolved(complaintId){
+return this.httpClient.get(this.PATH_API+'/markAsResolved/'+complaintId);
+}
+
+public markAsWip(complaintId){
+return this.httpClient.get(this.PATH_API+'/markAsWip/'+complaintId);
+}
+
+public markAsInReview(complaintId){
+return this.httpClient.get(this.PATH_API+'/markAsInReview/'+complaintId);
+}
+
+public getComplaintById(complaintId){
+
+return this.httpClient.get(this.PATH_API+'/getComplaintById/'+complaintId);
+}
+
+public getMyComplaints(): Observable<Complaint[]>{
+return this.httpClient.get<Complaint[]>(this.PATH_API+'/get/mycomplaints');
+}
+
+public getComplaintListEngg():Observable<Complaint[]>{
+return this.httpClient.get<Complaint[]>(this.PATH_API+'/get/complaint/list/engineer');
+}
+
+}
+
+complaint.spec.ts: -- -- -- - -- -- -- -- - -- --
+
+import { Complaint } from './complaint';
+
+describe('Complaint', () => {
+it('should create an instance', () => {
+expect(new Complaint()).toBeTruthy();
+});
+});
+
+complaint.ts: -- -- -- -- - -- -- -- - -- -- -- -- -
+
+import { User } from "./user";
+
+export class Complaint {
+
+category: string;
+heading: string;
+details:string;
+address:string;
+pincode:string;
+fullname:string;
+complaintStatus:string;
+customer:User;
+
+}
+
+role.ts:--- -- -- - -- -- -- - -- -- --
+
+export class Role {
+
+roleName:string;
+roleDescription:string;
+}
+
+user-auth.service.ts: -- -- -- - -- -- -- - -- -- -- ---
+
+import { Injectable } from '@angular/core';
+
+@Injectable({
+providedIn: 'root'
+})
+export class UserAuthService {
+
+constructor() { }
+
+public setRoles(roles:[]){
+//array type roles [] has to be convert into string to store it into data storage that can be done by
+JSON.stringify
+localStorage.setItem("roles", JSON.stringify(roles));
+}
+
+//localStorage.getItem("roles")-->return string, but to get array type return use JSON.parse
+public getRoles():[]{
+return JSON.parse(localStorage.getItem("roles"));
+}
+
+public setToken(jwtToken:string){
+localStorage.setItem("jwtToken", jwtToken);
+}
+
+public getToken() : string{
+return localStorage.getItem("jwtToken");
+}
+
+public clear(){
+localStorage.clear();
+}
+
+public isLoggedIn(){
+return this.getRoles() && this.getToken();
+}
+
+public isAdmin(){
+const roles: any[] = this.getRoles();
+
+return roles[0].roleName === 'Admin';
+}
+
+public isCustomer(){
+const roles: any[] = this.getRoles();
+return roles[0].roleName === 'Customer';
+}
+
+public isManager(){
+const roles: any[] = this.getRoles();
+return roles[0].roleName === 'Manager';
+}
+
+public isEngineer(){
+const roles: any[] = this.getRoles();
+return roles[0].roleName === 'Engineer';
+}
+
+}
+
+user.service.spec.ts:- -- -- - -- -- -- - -- -- -- -- - --
+
+import { TestBed } from '@angular/core/testing';
+
+import { UserService } from './user.service';
+
+describe('UserService', () => {
+let service: UserService;
+
+beforeEach(() => {
+TestBed.configureTestingModule({});
+service = TestBed.inject(UserService);
+});
+
+it('should be created', () => {
+expect(service).toBeTruthy();
+});
+});
+
+user.service.ts:- -- -- - -- -- -- -- - -- -- -- - -- --
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { User } from './user';
+import { UserAuthService } from './user-auth.service';
+
+@Injectable({
+providedIn: 'root'
+})
+export class UserService {
+
+PATH_API = "http://localhost:8080";
+requestHeader = new HttpHeaders(
+{ "No-Auth": "True" }
+);
+
+constructor(
+private httpClient: HttpClient,
+
+private userAuthService: UserAuthService
+){}
+
+public getAllUsers(){
+return this.httpClient.get(this.PATH_API + "/allUser");
+}
+
+//this.httpClient.post(here url to api be called)
+public login(LoginData) {
+return this.httpClient.post(this.PATH_API + "/authenticate", LoginData, { headers: this.requestHeader
+});
+}
+
+public forCustomer(){
+return this.httpClient.get(this.PATH_API + '/forCustomer', {responseType:'text'});
+}
+
+public forAdmin(){
+return this.httpClient.get(this.PATH_API + '/forAdmin', {responseType:'text'});
+}
+
+public forManager(){
+return this.httpClient.get(this.PATH_API + '/forManager', {responseType:'text'});
+}
+
+public forEngineer(){
+return this.httpClient.get(this.PATH_API + '/forEngineer', {responseType:'text'});
+}
+
+//roleMatch(allowedRoles) allowedRoles(roles specified to user in db)--> will be matched with actual
+roles-->stored in datastorage if matched-->return isMatch true
+
+public roleMatch(allowedRoles): boolean {
+let isMatch = false;
+const userRoles: any = this.userAuthService.getRoles();
+
+if (userRoles != null && userRoles) {
+for (let i = 0; i < userRoles.length; i++) {
+for (let j = 0; j < allowedRoles.length; j++) {
+
+if (userRoles[i].roleName == allowedRoles[j]) {
+isMatch = true;
+return isMatch;
+}
+else {
+return isMatch;
+}
+
+}
+}
+}
+
+}
+
+//for new customer registration open to all
+public customerRegister(registerData){
+return this.httpClient.post(this.PATH_API+'/registerNewCustomer', registerData);
+}
+
+//for new engineer registration only allowed fro admin
+public engineerRegister(registerData){
+return this.httpClient.post(this.PATH_API+'/registerNewEngineer', registerData);
+}
+
+//for new manager registration only allowed for admin
+public managerRegister(registerData){
+return this.httpClient.post(this.PATH_API+'/registerNewManager', registerData);
+}
+
+public deleteUser(userName:string){
+return this.httpClient.delete(this.PATH_API+'/deleteUser/'+userName);
+}
+
+// public getUserByUserName(userName:string){
+// return this.httpClient.get<User>(this.PATH_API+'/getUserById/'+ userName);
+// }
+
+}
+
+user.ts:- -- -- - -- -- -- -- - -- -- -- --
+
+import { Role } from "./role";
+
+export class User {
+userName:string;
+fullName:string;
+
+userpassword:string;
+role:Role;
+}
+
+index.html:--- -- - -- -- -- - -- -- -- -- - -- -- --
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ComplaintRedressal</title>
+<base href="/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"
+rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="mat-typography">
+<app-root></app-root>
+</body>
+</html>
+
+main.ts:- -- - -- -- -- -- - -- -- -- - -- -- -
+
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { AppModule } from './app/app.module';
+
+import { environment } from './environments/environment';
+
+if (environment.production) {
+enableProdMode();
+}
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+.catch(err => console.error(err));
+
+style.css: -- - -- -- -- -- - -- -- -- - -- -
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.bg{
+background-image: url(/assets/telecom-bg1.jpg);
+height: 650px;
+width: 1149px;
+align-items: center;
+/* background-repeat: no-repeat; */
+}
+
+test.ts:--- -- -- - -- -- -- - -- -- -- -- - -- -- -- ---
+
+// This file is required by karma.conf.js and loads recursively all the .spec and framework files
+
+import 'zone.js/dist/zone-testing';
+import { getTestBed } from '@angular/core/testing';
+
+import {
+BrowserDynamicTestingModule,
+platformBrowserDynamicTesting
+} from '@angular/platform-browser-dynamic/testing';
+
+declare const require: {
+context(path: string, deep?: boolean, filter?: RegExp): {
+keys(): string[];
+<T>(id: string): T;
+};
+};
+
+// First, initialize the Angular testing environment.
+getTestBed().initTestEnvironment(
+BrowserDynamicTestingModule,
+platformBrowserDynamicTesting()
+);
+// Then we find all the tests.
+const context = require.context('./', true, /\.spec\.ts$/);
+// And load the modules.
+context.keys().map(context);
+
+
